@@ -68,3 +68,5 @@ Required GitHub repository secrets:
 - `docker-compose.dev.yml`: development override
 - `docker-compose.prod.yml`: image-based deployment Compose
 - `.github/workflows/release-deploy.yml`: tag-based CI/CD workflow
+
+See `docs/deployment.md` for server setup and GitHub Secrets.
