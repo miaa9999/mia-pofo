@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="flex flex-1 flex-col justify-center gap-8">
+  <div class="space-y-3">
+    <p class="text-sm font-semibold uppercase tracking-wide text-mint">FastAPI + Jinja2 + HTMX</p>
+    <h1 class="text-4xl font-bold sm:text-5xl">{{ app_name }}</h1>
+    <p class="max-w-2xl text-base leading-7 text-slate-700">
+      Docker Compose, PostgreSQL, Tailwind CSS, Alpine.js까지 연결된 기본 앱입니다.
+    </p>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm" x-data="{ title: '' }">
+    <form
+      class="flex flex-col gap-3 sm:flex-row"
+      hx-post="/todos"
+      hx-target="#todo-list"
+      hx-swap="afterbegin"
+      hx-on::after-request="document.getElementById('empty-state')?.remove()"
+      @submit="title = ''"
+    >
+      <input
+        class="min-h-11 flex-1 rounded-md border-slate-300 text-base shadow-sm focus:border-mint focus:ring-mint"
+        type="text"
+        name="title"
+        x-model="title"
+        maxlength="160"
+        placeholder="할 일을 입력하세요"
+        required
+      >
+      <button
+        class="min-h-11 rounded-md bg-ink px-5 text-sm font-semibold text-white transition hover:bg-mint focus:outline-none focus:ring-2 focus:ring-mint focus:ring-offset-2"
+        type="submit"
+      >
+        추가
+      </button>
+    </form>
+
+    <div id="todo-list" class="mt-5 divide-y divide-slate-100">
+      {% for todo in todos %}
+        {% include "partials/todo_item.html" %}
+      {% else %}
+        <p id="empty-state" class="py-4 text-sm text-slate-500">아직 등록된 항목이 없습니다.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

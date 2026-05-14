@@ -1,0 +1,16 @@
+services:
+  web:
+    volumes:
+      - ./:/usr/src/app:cached
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  tailwind:
+    image: node:20-alpine
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app:cached
+      - node_modules:/usr/src/app/node_modules
+    command: sh -c "npm install && npm run css:watch"
+
+volumes:
+  node_modules:
