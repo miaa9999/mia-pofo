@@ -48,6 +48,7 @@ jobs:
         run: |
           docker compose config
           APP_IMAGE=ghcr.io/example/for-hyun:test \
+          DOMAIN_NAME=example.com \
           POSTGRES_USER=postgres \
           POSTGRES_PASSWORD=postgres \
           POSTGRES_DB=appdb \
@@ -104,6 +105,7 @@ jobs:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
       DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
       APP_PORT: ${{ secrets.APP_PORT || '8000' }}
+      DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
@@ -120,6 +122,7 @@ jobs:
           test -n "$DEPLOY_USER"
           test -n "$DEPLOY_PATH"
           test -n "$DEPLOY_SSH_KEY"
+          test -n "$DOMAIN_NAME"
           test -n "$POSTGRES_USER"
           test -n "$POSTGRES_PASSWORD"
           test -n "$POSTGRES_DB"
@@ -136,9 +139,12 @@ jobs:
           mkdir -p release/ddl
           cp docker-compose.prod.yml release/docker-compose.yml
           cp -r ddl/. release/ddl/
+          mkdir -p release/infra/caddy
+          cp infra/caddy/Caddyfile release/infra/caddy/Caddyfile
           cat > release/.env <<EOF
           APP_IMAGE=$APP_IMAGE
           APP_PORT=$APP_PORT
+          DOMAIN_NAME=$DOMAIN_NAME
           POSTGRES_USER=$POSTGRES_USER
           POSTGRES_PASSWORD=$POSTGRES_PASSWORD
           POSTGRES_DB=$POSTGRES_DB

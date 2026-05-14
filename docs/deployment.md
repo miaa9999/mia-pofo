@@ -12,6 +12,7 @@ The server only needs:
 - Docker Compose plugin
 - SSH access from GitHub Actions
 - An open app port, usually `8000`
+- Open `80` and `443` ports when using the domain with HTTPS
 
 ## Server setup
 
@@ -74,6 +75,7 @@ Add these required secrets:
 | `DEPLOY_USER` | `ubuntu` | SSH user |
 | `DEPLOY_SSH_KEY` | private key content | Content of `mia-pofo-deploy-key` |
 | `DEPLOY_PATH` | `/home/ubuntu/apps/mia-pofo` | Directory on server |
+| `DOMAIN_NAME` | `miaa9999.cafe24.com` | Domain for Caddy HTTPS |
 | `POSTGRES_USER` | `mia` | PostgreSQL user inside Docker |
 | `POSTGRES_PASSWORD` | strong password | Do not commit this |
 | `POSTGRES_DB` | `mia_pofo` | Database name |
@@ -83,7 +85,7 @@ Optional secrets:
 | Secret | Example | Notes |
 | --- | --- | --- |
 | `DEPLOY_PORT` | `22` | SSH port |
-| `APP_PORT` | `8000` | Public app port |
+| `APP_PORT` | `8000` | Legacy direct app port, not used by Caddy deployment |
 | `GHCR_USERNAME` | `miaa9999` | Needed if GHCR package is private |
 | `GHCR_TOKEN` | GitHub PAT | Needs `read:packages` for private GHCR pulls |
 
@@ -117,6 +119,14 @@ GitHub Actions will build, push, upload Compose files, and run:
 docker compose pull
 docker compose up -d
 ```
+
+After deployment, open:
+
+```text
+https://miaa9999.cafe24.com
+```
+
+Caddy automatically issues and renews the HTTPS certificate as long as ports `80` and `443` are reachable from the internet.
 
 ## Database initialization
 

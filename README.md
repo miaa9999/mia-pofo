@@ -53,6 +53,7 @@ Required GitHub repository secrets:
 - `DEPLOY_PORT`: SSH port, defaults to `22`
 - `DEPLOY_PATH`: deployment directory on the server
 - `APP_PORT`: public app port, defaults to `8000`
+- `DOMAIN_NAME`: deployment domain, for example `miaa9999.cafe24.com`
 - `POSTGRES_USER`: PostgreSQL user
 - `POSTGRES_PASSWORD`: PostgreSQL password
 - `POSTGRES_DB`: PostgreSQL database name
@@ -67,6 +68,7 @@ Required GitHub repository secrets:
 - `docker-compose.yml`: local/prod-like Compose
 - `docker-compose.dev.yml`: development override
 - `docker-compose.prod.yml`: image-based deployment Compose
+- `infra/caddy/Caddyfile`: Caddy reverse proxy and HTTPS config
 - `.github/workflows/release-deploy.yml`: tag-based CI/CD workflow
 
 See `docs/deployment.md` for server setup and GitHub Secrets.
